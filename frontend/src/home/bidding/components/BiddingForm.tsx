@@ -1,8 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import {
   Save,
-  SendHorizontal,
-  AlertCircle,
   Calculator,
   ChevronRight,
   Info

@@ -1,8 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { 
   CheckCircle2, 
   ArrowLeft, 
-  FileText, 
   Calculator,
   ShieldAlert,
   Download
