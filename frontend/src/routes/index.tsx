@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { 
-  Briefcase, 
-  ClipboardList, 
-  BarChart3, 
-  SendHorizontal, 
+import {
+  Briefcase,
+  ClipboardList,
+  BarChart3,
+  SendHorizontal,
   TrendingDown,
   LayoutDashboard
 } from 'lucide-react'
@@ -66,7 +66,7 @@ function Index() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {modules.map((mod) => (
-            <Link 
+            <Link
               key={mod.to}
               to={mod.to}
               className="group bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 hover:border-indigo-300 transition-all duration-300 flex flex-col"
@@ -77,9 +77,8 @@ function Index() {
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-xl font-bold text-slate-800">{mod.title}</h3>
-                  <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${
-                    mod.role === 'Interno' ? 'bg-slate-100 text-slate-500' : 'bg-indigo-100 text-indigo-700'
-                  }`}>
+                  <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${mod.role === 'Interno' ? 'bg-slate-100 text-slate-500' : 'bg-indigo-100 text-indigo-700'
+                    }`}>
                     {mod.role}
                   </span>
                 </div>

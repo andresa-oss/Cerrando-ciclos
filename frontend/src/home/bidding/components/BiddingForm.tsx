@@ -3,8 +3,10 @@ import {
   Save,
   Calculator,
   ChevronRight,
-  Info
+  Info,
+  Upload
 } from 'lucide-react';
+import { toast } from 'sonner';
 import type { BiddingActivity } from '../types';
 
 interface BiddingFormProps {
@@ -85,6 +87,36 @@ export function BiddingForm({
           <p className="text-slate-500 mt-2 max-w-2xl text-sm sm:text-base leading-relaxed">
             Por favor, registra el costo unitario para cada actividad descrita en los pliegos. El sistema calculará automáticamente los subtotales para generar tu oferta final.
           </p>
+          <div className="mt-5">
+            <button
+              type="button"
+              onClick={() => document.getElementById('excel-upload')?.click()}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg font-bold transition-colors border border-emerald-200 shadow-sm"
+            >
+              <Upload size={18} />
+              Importar Precios via Excel
+            </button>
+            <input
+              type="file"
+              id="excel-upload"
+              className="hidden"
+              accept=".xlsx,.xls,.csv"
+              onChange={(e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                  const file = e.target.files[0];
+                  // Simulando lectura y parseado del archivo
+                  toast.promise(
+                    new Promise((resolve) => setTimeout(resolve, 2000)),
+                    {
+                      loading: `Leyendo archivo ${file.name}...`,
+                      success: '¡Precios importados correctamente! (Simulación)',
+                      error: 'Error al interpretar el archivo de Excel',
+                    }
+                  );
+                }
+              }}
+            />
+          </div>
         </div>
 
         {/* Progress Card */}
@@ -142,8 +174,8 @@ export function BiddingForm({
                   </td>
                   <td className="px-6 py-5 relative">
                     <div className={`flex items-center rounded-lg border-2 transition-all duration-200 ${activeRow === act.id
-                        ? 'border-indigo-500 ring-4 ring-indigo-500/10'
-                        : 'border-slate-200 hover:border-slate-300'
+                      ? 'border-indigo-500 ring-4 ring-indigo-500/10'
+                      : 'border-slate-200 hover:border-slate-300'
                       } bg-white overflow-hidden`}>
                       <span className="px-3 text-slate-400 font-medium select-none">$</span>
                       <input
@@ -201,8 +233,8 @@ export function BiddingForm({
                   type="submit"
                   disabled={progress < 100}
                   className={`flex-1 sm:flex-none px-6 py-3 rounded-lg font-semibold text-white transition-all shadow-md flex items-center justify-center gap-2 ${progress === 100
-                      ? 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-indigo-500/25 active:scale-[0.98]'
-                      : 'bg-slate-300 cursor-not-allowed'
+                    ? 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-indigo-500/25 active:scale-[0.98]'
+                    : 'bg-slate-300 cursor-not-allowed'
                     }`}
                 >
                   <span>Vista Previa</span>
