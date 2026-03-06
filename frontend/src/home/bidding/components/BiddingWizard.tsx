@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BiddingForm } from './BiddingForm';
 import { BiddingPreview } from './BiddingPreview';
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { 
-  Trophy, 
-  TrendingDown, 
-  AlertTriangle, 
-  Clock, 
+import {
+  Trophy,
+  TrendingDown,
+  AlertTriangle,
+  Clock,
   ShieldCheck,
   Zap
 } from 'lucide-react';
@@ -15,8 +15,8 @@ interface CounterofferDashboardProps {
   data?: CounterofferData;
 }
 
-export function CounterofferDashboard({ 
-  data = { rank: 2, currentOffer: 5000000, targetOffer: 4850000 } 
+export function CounterofferDashboard({
+  data = { rank: 2, currentOffer: 5000000, targetOffer: 4850000 }
 }: CounterofferDashboardProps) {
   const [newOffer, setNewOffer] = useState<string>('');
   const { mutate: submitCounteroffer, isPending } = useSubmitCounteroffer();
@@ -29,7 +29,7 @@ export function CounterofferDashboard({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const offerValue = parseInt(newOffer, 10);
-    
+
     if (!offerValue || offerValue >= data.currentOffer) {
       toast.error('Tu nueva oferta debe ser menor a la oferta actual para mejorar tu posición.');
       return;
@@ -56,7 +56,7 @@ export function CounterofferDashboard({
 
   return (
     <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
-      
+
       {/* Header Alerta */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-slate-900 rounded-2xl p-6 shadow-xl mb-8 border border-slate-700 relative overflow-hidden">
         <div className="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 bg-indigo-500 rounded-full blur-3xl opacity-20 pointer-events-none"></div>
@@ -79,7 +79,7 @@ export function CounterofferDashboard({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        
+
         {/* Tu Posición */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col items-center justify-center relative overflow-hidden group hover:border-indigo-300 transition-colors">
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -94,7 +94,7 @@ export function CounterofferDashboard({
             Admisible
           </div>
         </div>
-        
+
         {/* Oferta Actual */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-center">
           <div className="flex justify-between items-start mb-4">
@@ -147,25 +147,24 @@ export function CounterofferDashboard({
             </label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xl">$</span>
-              <input 
-                type="text" 
-                id="newOffer" 
+              <input
+                type="text"
+                id="newOffer"
                 value={newOffer ? parseInt(newOffer).toLocaleString() : ''}
                 onChange={handlePriceChange}
-                className="w-full h-14 pl-10 pr-4 text-2xl font-black font-mono text-slate-800 rounded-xl border-2 border-slate-200 bg-slate-50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 outline-none transition-all placeholder:text-slate-300 placeholder:font-normal" 
+                className="w-full h-14 pl-10 pr-4 text-2xl font-black font-mono text-slate-800 rounded-xl border-2 border-slate-200 bg-slate-50 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 outline-none transition-all placeholder:text-slate-300 placeholder:font-normal"
                 placeholder="Ej. 4,750,000"
               />
             </div>
           </div>
-          
-          <button 
+
+          <button
             type="submit"
             disabled={!newOffer || isPending}
-            className={`w-full lg:w-auto h-14 px-8 rounded-xl font-bold text-lg text-white transition-all shadow-lg flex items-center justify-center gap-2 shrink-0 ${
-              !newOffer 
-                ? 'bg-slate-300 cursor-not-allowed shadow-none' 
+            className={`w-full lg:w-auto h-14 px-8 rounded-xl font-bold text-lg text-white transition-all shadow-lg flex items-center justify-center gap-2 shrink-0 ${!newOffer
+                ? 'bg-slate-300 cursor-not-allowed shadow-none'
                 : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-600/30'
-            }`}
+              }`}
           >
             {isPending ? (
               <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></span>

@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { 
-  Save, 
-  AlertCircle, 
+import {
+  Save,
   Calculator,
   ChevronRight,
   Info,
@@ -15,14 +14,14 @@ interface BiddingFormProps {
   onSubmit?: (data: Record<string, number>) => void;
 }
 
-export function BiddingForm({ 
+export function BiddingForm({
   activities = [
     { id: 'ACT-001', name: 'Excavación manual en material común', quantity: 154.5 },
     { id: 'ACT-002', name: "Suministro e instalación de concreto f'c=3000 PSI", quantity: 45.2 },
     { id: 'ACT-003', name: 'Acero de refuerzo figurado 60000 PSI', quantity: 1250.0 },
     { id: 'ACT-004', name: 'Muro en ladrillo tolete común (e=0.15m)', quantity: 85.0 },
   ],
-  onSubmit 
+  onSubmit
 }: BiddingFormProps) {
   const [unitValues, setUnitValues] = useState<Record<string, string>>({});
   const [activeRow, setActiveRow] = useState<string | null>(null);
@@ -60,18 +59,18 @@ export function BiddingForm({
       alert("Por favor diligencia todos los valores unitarios antes de continuar.");
       return;
     }
-    
+
     const parsedValues: Record<string, number> = {};
     Object.keys(unitValues).forEach(k => {
       parsedValues[k] = parseFloat(unitValues[k]) || 0;
     });
-    
+
     onSubmit?.(parsedValues);
   };
 
   return (
     <div className="w-full max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      
+
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
         <div>
@@ -90,17 +89,17 @@ export function BiddingForm({
           </p>
           <div className="mt-5">
             <button
-               type="button"
-               onClick={() => document.getElementById('excel-upload')?.click()}
-               className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg font-bold transition-colors border border-emerald-200 shadow-sm"
-             >
+              type="button"
+              onClick={() => document.getElementById('excel-upload')?.click()}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg font-bold transition-colors border border-emerald-200 shadow-sm"
+            >
               <Upload size={18} />
               Importar Precios via Excel
             </button>
-            <input 
-              type="file" 
-              id="excel-upload" 
-              className="hidden" 
+            <input
+              type="file"
+              id="excel-upload"
+              className="hidden"
               accept=".xlsx,.xls,.csv"
               onChange={(e) => {
                 if (e.target.files && e.target.files.length > 0) {
@@ -127,7 +126,7 @@ export function BiddingForm({
             <span className="text-2xl font-black text-indigo-600">{progress}%</span>
           </div>
           <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-            <div 
+            <div
               className="h-full bg-indigo-600 rounded-full transition-all duration-500 ease-out"
               style={{ width: `${progress}%` }}
             />
@@ -137,7 +136,7 @@ export function BiddingForm({
 
       {/* Main Table Form */}
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/40 overflow-hidden">
-        
+
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm whitespace-nowrap">
             <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase tracking-wider text-xs font-semibold">
@@ -151,8 +150,8 @@ export function BiddingForm({
             </thead>
             <tbody className="divide-y divide-slate-100/80 text-slate-700">
               {activities.map((act, idx) => (
-                <tr 
-                  key={act.id} 
+                <tr
+                  key={act.id}
                   className={`transition-colors duration-200 ${activeRow === act.id ? 'bg-indigo-50/50' : 'hover:bg-slate-50'}`}
                   onFocus={() => setActiveRow(act.id)}
                   onBlur={() => setActiveRow(null)}
@@ -174,11 +173,10 @@ export function BiddingForm({
                     {act.quantity.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 })}
                   </td>
                   <td className="px-6 py-5 relative">
-                    <div className={`flex items-center rounded-lg border-2 transition-all duration-200 ${
-                      activeRow === act.id 
-                        ? 'border-indigo-500 ring-4 ring-indigo-500/10' 
-                        : 'border-slate-200 hover:border-slate-300'
-                    } bg-white overflow-hidden`}>
+                    <div className={`flex items-center rounded-lg border-2 transition-all duration-200 ${activeRow === act.id
+                      ? 'border-indigo-500 ring-4 ring-indigo-500/10'
+                      : 'border-slate-200 hover:border-slate-300'
+                      } bg-white overflow-hidden`}>
                       <span className="px-3 text-slate-400 font-medium select-none">$</span>
                       <input
                         type="text"
@@ -201,7 +199,7 @@ export function BiddingForm({
         {/* Footer & Summary */}
         <div className="bg-slate-50 border-t border-slate-200 p-6 sm:p-8">
           <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
-            
+
             <div className="flex items-start gap-4 text-sm text-slate-500 max-w-xl">
               <div className="p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
                 <Info size={20} />
@@ -224,21 +222,20 @@ export function BiddingForm({
 
               {/* Action Buttons */}
               <div className="flex gap-3 w-full sm:w-auto">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="flex-1 sm:flex-none px-6 py-3 rounded-lg font-semibold text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 transition-all shadow-sm flex items-center justify-center gap-2"
                 >
                   <Save size={18} />
                   <span>Guardar</span>
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={progress < 100}
-                  className={`flex-1 sm:flex-none px-6 py-3 rounded-lg font-semibold text-white transition-all shadow-md flex items-center justify-center gap-2 ${
-                    progress === 100 
-                      ? 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-indigo-500/25 active:scale-[0.98]' 
-                      : 'bg-slate-300 cursor-not-allowed'
-                  }`}
+                  className={`flex-1 sm:flex-none px-6 py-3 rounded-lg font-semibold text-white transition-all shadow-md flex items-center justify-center gap-2 ${progress === 100
+                    ? 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-indigo-500/25 active:scale-[0.98]'
+                    : 'bg-slate-300 cursor-not-allowed'
+                    }`}
                 >
                   <span>Vista Previa</span>
                   <ChevronRight size={18} />
@@ -249,7 +246,7 @@ export function BiddingForm({
           </div>
         </div>
       </form>
-      
+
     </div>
   );
 }
