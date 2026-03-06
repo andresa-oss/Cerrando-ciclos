@@ -1,12 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { 
   Save, 
-  SendHorizontal, 
   AlertCircle, 
   Calculator,
   ChevronRight,
-  Info 
+  Info,
+  Upload
 } from 'lucide-react';
+import { toast } from 'sonner';
 import type { BiddingActivity } from '../types';
 
 interface BiddingFormProps {
@@ -87,6 +88,36 @@ export function BiddingForm({
           <p className="text-slate-500 mt-2 max-w-2xl text-sm sm:text-base leading-relaxed">
             Por favor, registra el costo unitario para cada actividad descrita en los pliegos. El sistema calculará automáticamente los subtotales para generar tu oferta final.
           </p>
+          <div className="mt-5">
+            <button
+               type="button"
+               onClick={() => document.getElementById('excel-upload')?.click()}
+               className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg font-bold transition-colors border border-emerald-200 shadow-sm"
+             >
+              <Upload size={18} />
+              Importar Precios via Excel
+            </button>
+            <input 
+              type="file" 
+              id="excel-upload" 
+              className="hidden" 
+              accept=".xlsx,.xls,.csv"
+              onChange={(e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                  const file = e.target.files[0];
+                  // Simulando lectura y parseado del archivo
+                  toast.promise(
+                    new Promise((resolve) => setTimeout(resolve, 2000)),
+                    {
+                      loading: `Leyendo archivo ${file.name}...`,
+                      success: '¡Precios importados correctamente! (Simulación)',
+                      error: 'Error al interpretar el archivo de Excel',
+                    }
+                  );
+                }
+              }}
+            />
+          </div>
         </div>
 
         {/* Progress Card */}

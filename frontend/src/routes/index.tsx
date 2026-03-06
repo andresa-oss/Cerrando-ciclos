@@ -8,7 +8,13 @@ function Index() {
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight">Solenium Licitaciones</h1>
+        <div className="flex items-center justify-center gap-4 mb-6">
+          <img src="/LogoSolenium.png" alt="Solenium Logo" className="h-12 w-auto object-contain drop-shadow-sm" />
+          <span className="font-black text-slate-900 tracking-tighter text-4xl" style={{ fontFamily: 'Arial Black, system-ui, sans-serif' }}>
+            GISE
+          </span>
+        </div>
+        <h1 className="text-4xl font-bold tracking-tight">Portal Integrado de Licitaciones</h1>
         <p className="text-muted-foreground text-lg mb-8">
           Workspace under construction for Hackathon
         </p>

@@ -15,11 +15,11 @@ function BiddingPage() {
       {/* Navigation Header mockup */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <span className="text-white font-black text-lg leading-none">S</span>
-            </div>
-            <span className="font-bold text-slate-900 tracking-tight text-lg">Solenium</span>
+          <div className="flex items-center gap-3">
+            <img src="/LogoSolenium.png" alt="Solenium Logo" className="h-8 w-auto object-contain" />
+            <span className="font-black text-slate-900 tracking-tighter text-2xl" style={{ fontFamily: 'Arial Black, system-ui, sans-serif' }}>
+              GISE
+            </span>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full">
