@@ -1,4 +1,3 @@
-import React from 'react';
 import type { BiddingActivity } from '../types';
 
 interface BiddingFormProps {

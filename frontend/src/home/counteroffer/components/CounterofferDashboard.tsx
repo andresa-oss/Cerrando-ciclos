@@ -1,4 +1,3 @@
-import React from 'react';
 import type { CounterofferData } from '../types';
 
 interface CounterofferDashboardProps {
