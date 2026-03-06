@@ -9,9 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as CounterofferRouteImport } from './routes/counteroffer'
+import { Route as BiddingRouteImport } from './routes/bidding'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
 
+const CounterofferRoute = CounterofferRouteImport.update({
+  id: '/counteroffer',
+  path: '/counteroffer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BiddingRoute = BiddingRouteImport.update({
+  id: '/bidding',
+  path: '/bidding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -25,32 +37,54 @@ const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bidding': typeof BiddingRoute
+  '/counteroffer': typeof CounterofferRoute
   '/projects/': typeof ProjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bidding': typeof BiddingRoute
+  '/counteroffer': typeof CounterofferRoute
   '/projects': typeof ProjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bidding': typeof BiddingRoute
+  '/counteroffer': typeof CounterofferRoute
   '/projects/': typeof ProjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/projects/'
+  fullPaths: '/' | '/bidding' | '/counteroffer' | '/projects/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/projects'
-  id: '__root__' | '/' | '/projects/'
+  to: '/' | '/bidding' | '/counteroffer' | '/projects'
+  id: '__root__' | '/' | '/bidding' | '/counteroffer' | '/projects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BiddingRoute: typeof BiddingRoute
+  CounterofferRoute: typeof CounterofferRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/counteroffer': {
+      id: '/counteroffer'
+      path: '/counteroffer'
+      fullPath: '/counteroffer'
+      preLoaderRoute: typeof CounterofferRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bidding': {
+      id: '/bidding'
+      path: '/bidding'
+      fullPath: '/bidding'
+      preLoaderRoute: typeof BiddingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -70,6 +104,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BiddingRoute: BiddingRoute,
+  CounterofferRoute: CounterofferRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
 }
 export const routeTree = rootRouteImport
