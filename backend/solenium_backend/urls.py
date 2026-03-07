@@ -19,7 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/projects/', include('projects.urls')),
+    path('api/v1/', include('projects.urls')),
     path('api/v1/tenders/', include('tenders.urls')),
     path('api/v1/', include('offers.urls')), # esto expone /api/v1/offers/ y /api/v1/pricing/
 ]

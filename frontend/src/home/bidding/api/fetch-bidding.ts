@@ -1,11 +1,13 @@
 import { queryOptions } from '@tanstack/react-query';
 import { BIDDING_KEYS } from './constants';
+import { api } from '@/lib/axios';
 
-// Función para simular fetch de datos de licitación
-const fetchBiddingDetail = async (id: string) => {
-  // const { data } = await axios.get(`/api/biddings/${id}`);
-  // return data;
-  return { id, title: 'Simulated Bidding Data' };
+const fetchBiddingDetail = async (projectId: string) => {
+  const [projectRes, itemsRes] = await Promise.all([
+    api.get(`/api/v1/projects/${projectId}/`),
+    api.get(`/api/v1/tenders/items/?project_id=${projectId}`)
+  ])
+  return { project: projectRes.data, items: itemsRes.data };
 };
 
 export const biddingDetailQueryOptions = (biddingId: string) => {

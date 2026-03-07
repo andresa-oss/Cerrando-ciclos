@@ -24,14 +24,14 @@ function Index() {
     {
       title: 'Cantidades de Obra',
       description: 'Matriz técnica de cantidades e impuestos (AIU/IVA).',
-      to: '/projects/proj-001/tenders',
+      to: '/projects/1/tenders',
       icon: <ClipboardList className="text-emerald-600" size={28} />,
       role: 'Interno'
     },
     {
       title: 'Tablero de Evaluación',
       description: 'Heatmap comparativo y matriz de adjudicación.',
-      to: '/projects/proj-001/evaluation',
+      to: '/projects/1/evaluation',
       icon: <BarChart3 className="text-amber-600" size={28} />,
       role: 'Interno'
     },
