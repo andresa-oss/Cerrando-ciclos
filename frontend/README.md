@@ -1,73 +1,34 @@
-# React + TypeScript + Vite
+# Cerrando Ciclos - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es el frontend de la plataforma de licitación de Solenium, construido con **React 19** y **Vite**.
 
-Currently, two official plugins are available:
+## 🛠️ Stack Tecnológico
+- **React 19 + TypeScript**: Base del proyecto.
+- **TanStack Router**: Enrutamiento basado en archivos (File-based routing).
+- **TanStack Query (v5)**: Gestión de estado asíncrono y caché.
+- **Zustand**: Gestión de estado global ligero.
+- **Tailwind CSS v4 + shadcn/ui**: Sistema de diseño y componentes UI.
+- **Axios**: Cliente HTTP con interceptores para manejo de API.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📂 Estructura de Carpetas
+Seguimos una arquitectura basada en funcionalidades (Features) dentro de `src/home/`:
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+src/home/{feature}/
+  ├── index.tsx          # Barril de exportación
+  ├── api/              # Lógica de datos (fetchers, mutations, constants)
+  ├── components/       # Componentes locales de la funcionalidad
+  ├── hooks/           # Hooks personalizados específicos
+  └── types/           # Definiciones de TypeScript
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📋 Estándares de Desarrollo
+- **Componentes**: Usar declaraciones de función (`export function Component()`) en lugar de `const`.
+- **Data Fetching**: Usar `queryOptions` para centralizar la configuración de consultas.
+- **Composición**: Preferir el patrón de componentes compuestos para evitar el prop-drilling y props booleanas excesivas.
+- **Toast**: Feedback mediante `sonner`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🚀 Ejecución
+1. Instalar dependencias: `npm install`
+2. Iniciar servidor de desarrollo: `npm run dev`
+3. Ejecutar tests: `npm test`
