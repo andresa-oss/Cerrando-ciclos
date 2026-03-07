@@ -3,9 +3,7 @@ import {
   Trophy,
   TrendingDown,
   AlertTriangle,
-  Clock,
   ShieldCheck,
-  Zap
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useSubmitCounteroffer } from '../api/mutations';
@@ -51,8 +49,7 @@ export function CounterofferDashboard({
     );
   };
 
-  const differenceToTarget = data.currentOffer - data.targetOffer;
-  const percentageToImprove = ((differenceToTarget / data.currentOffer) * 100).toFixed(2);
+
 
   return (
     <div className="w-full max-w-5xl mx-auto p-4 sm:p-6 lg:p-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
@@ -61,24 +58,21 @@ export function CounterofferDashboard({
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-slate-900 rounded-2xl p-6 shadow-xl mb-8 border border-slate-700 relative overflow-hidden">
         <div className="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 bg-indigo-500 rounded-full blur-3xl opacity-20 pointer-events-none"></div>
         <div className="flex items-start gap-4 z-10">
-          <div className="p-3 bg-red-500/20 text-red-400 rounded-xl shrink-0">
-            <Clock className="animate-pulse" size={28} />
+          <div className="p-3 bg-indigo-500/20 text-indigo-400 rounded-xl shrink-0">
+            <ShieldCheck size={28} />
           </div>
           <div>
             <h1 className="text-2xl font-black text-white tracking-tight flex items-center gap-2">
               Sala de Contraoferta <ShieldCheck size={20} className="text-emerald-400" />
             </h1>
             <p className="text-slate-400 mt-1 text-sm md:text-base">
-              Felicidades, te encuentras en el <strong>TOP 3</strong>. Tienes 45 minutos para mejorar tu propuesta económica antes del cierre del sobre digital.
+              Felicidades, te encuentras en una posición de privilegio. Puedes mejorar tu propuesta económica antes del cierre del sobre digital.
             </p>
           </div>
         </div>
-        <div className="mt-4 sm:mt-0 px-4 py-2 bg-slate-800 rounded-lg border border-slate-700 font-mono text-xl font-bold text-red-400 z-10 tracking-widest shadow-inner">
-          44:59
-        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
 
         {/* Tu Posición */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col items-center justify-center relative overflow-hidden group hover:border-indigo-300 transition-colors">
@@ -106,21 +100,6 @@ export function CounterofferDashboard({
           </span>
           <p className="text-xs text-slate-500 mt-3 flex items-center gap-1">
             <ShieldCheck size={14} className="text-emerald-500" /> C.D. + A.I.U. Incluido
-          </p>
-        </div>
-
-        {/* Oferta a Vencer / Puesto #1 */}
-        <div className="bg-gradient-to-br from-indigo-50 to-white rounded-2xl p-6 shadow-sm border border-indigo-100 flex flex-col justify-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-2 h-full bg-indigo-500"></div>
-          <div className="flex justify-between items-start mb-4">
-            <span className="text-sm font-bold text-indigo-600 uppercase tracking-widest">Posición #1 de Referencia</span>
-            <span className="p-1.5 bg-indigo-100 text-indigo-600 rounded-lg"><Zap size={18} className="fill-indigo-600/20" /></span>
-          </div>
-          <span className="text-3xl lg:text-4xl font-black text-indigo-900 font-mono tracking-tight break-all">
-            ${data.targetOffer.toLocaleString()}
-          </span>
-          <p className="text-xs text-indigo-700/80 mt-3 font-medium">
-            Necesitas reducir un {percentageToImprove}% para alcanzar la Puntuación Económica del Puesto 1.
           </p>
         </div>
 
