@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import {
   Briefcase,
-  ClipboardList,
   BarChart3,
   SendHorizontal,
   TrendingDown,
@@ -19,20 +18,6 @@ function Index() {
       description: 'Gestión Kanban de licitaciones activas e históricas.',
       to: '/projects',
       icon: <LayoutDashboard className="text-indigo-600" size={28} />,
-      role: 'Interno'
-    },
-    {
-      title: 'Cantidades de Obra',
-      description: 'Matriz técnica de cantidades e impuestos (AIU/IVA).',
-      to: '/projects/1/tenders',
-      icon: <ClipboardList className="text-emerald-600" size={28} />,
-      role: 'Interno'
-    },
-    {
-      title: 'Tablero de Evaluación',
-      description: 'Heatmap comparativo y matriz de adjudicación.',
-      to: '/projects/1/evaluation',
-      icon: <BarChart3 className="text-amber-600" size={28} />,
       role: 'Interno'
     },
     {

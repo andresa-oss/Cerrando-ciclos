@@ -82,7 +82,6 @@ export function CounterofferDashboard({
           <span className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2 z-10">Tu Ranking Actual</span>
           <div className="flex items-baseline gap-1 z-10">
             <span className="text-6xl font-black text-indigo-600 tracking-tighter">#{data.rank}</span>
-            <span className="text-slate-400 font-medium">/ 15</span>
           </div>
           <div className="mt-4 px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-bold border border-indigo-100 z-10">
             Admisible
@@ -141,8 +140,8 @@ export function CounterofferDashboard({
             type="submit"
             disabled={!newOffer || isPending}
             className={`w-full lg:w-auto h-14 px-8 rounded-xl font-bold text-lg text-white transition-all shadow-lg flex items-center justify-center gap-2 shrink-0 ${!newOffer
-                ? 'bg-slate-300 cursor-not-allowed shadow-none'
-                : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-600/30'
+              ? 'bg-slate-300 cursor-not-allowed shadow-none'
+              : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-600/30'
               }`}
           >
             {isPending ? (
