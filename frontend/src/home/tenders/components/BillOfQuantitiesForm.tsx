@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Save, AlertTriangle, FileSpreadsheet, SendHorizontal } from 'lucide-react'
+import { Save, AlertTriangle, FileSpreadsheet, SendHorizontal, Filter } from 'lucide-react'
 import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -10,8 +10,11 @@ interface BillOfQuantitiesFormProps {
   onSubmit?: (data: TenderData) => void
 }
 
+type FilterView = 'ALL' | 'IVA_PLENO' | 'AIU'
+
 export function BillOfQuantitiesForm({ initialData, onSubmit }: BillOfQuantitiesFormProps) {
   const [items, setItems] = useState<BillOfQuantitiesItem[]>(initialData.items)
+  const [activeTab, setActiveTab] = useState<FilterView>('ALL')
 
   const handleItemChange = (itemId: string, field: keyof BillOfQuantitiesItem, value: any) => {
     setItems((prev) =>
@@ -36,6 +39,11 @@ export function BillOfQuantitiesForm({ initialData, onSubmit }: BillOfQuantities
     return { aiuCount: aiu, ivaCount: iva, exentoCount: exento, totalItems: items.length }
   }, [items])
 
+  const filteredItems = useMemo(() => {
+    if (activeTab === 'ALL') return items
+    return items.filter(item => item.taxType === activeTab)
+  }, [items, activeTab])
+
   const handleSave = () => {
     toast.success('Cambios guardados localmente')
   }
@@ -59,19 +67,28 @@ export function BillOfQuantitiesForm({ initialData, onSubmit }: BillOfQuantities
       
       {/* Dynamic Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white border text-center p-4 rounded-xl shadow-sm">
+        <button 
+          onClick={() => setActiveTab('ALL')}
+          className={`text-center p-4 rounded-xl shadow-sm transition-all border-2 ${activeTab === 'ALL' ? 'bg-white border-slate-900 ring-2 ring-slate-100' : 'bg-white border-transparent border-slate-100 opacity-70 hover:opacity-100'}`}
+        >
           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Ítems</p>
           <p className="text-3xl font-black text-slate-800">{totalItems}</p>
-        </div>
-        <div className="bg-indigo-50 border border-indigo-100 text-center p-4 rounded-xl shadow-sm">
+        </button>
+        <button 
+          onClick={() => setActiveTab('AIU')}
+          className={`text-center p-4 rounded-xl shadow-sm transition-all border-2 ${activeTab === 'AIU' ? 'bg-indigo-50 border-indigo-500 ring-2 ring-indigo-100' : 'bg-white border-slate-100 opacity-70 hover:opacity-100'}`}
+        >
           <p className="text-xs font-bold text-indigo-500 uppercase tracking-widest">Ítems A.I.U.</p>
           <p className="text-3xl font-black text-indigo-700">{aiuCount}</p>
-        </div>
-        <div className="bg-emerald-50 border border-emerald-100 text-center p-4 rounded-xl shadow-sm">
-          <p className="text-xs font-bold text-emerald-500 uppercase tracking-widest">Ítems IVA Pleno</p>
+        </button>
+        <button 
+          onClick={() => setActiveTab('IVA_PLENO')}
+          className={`text-center p-4 rounded-xl shadow-sm transition-all border-2 ${activeTab === 'IVA_PLENO' ? 'bg-emerald-50 border-emerald-500 ring-2 ring-emerald-100' : 'bg-white border-slate-100 opacity-70 hover:opacity-100'}`}
+        >
+          <p className="text-xs font-bold text-emerald-500 uppercase tracking-widest">Ítems IVA</p>
           <p className="text-3xl font-black text-emerald-700">{ivaCount}</p>
-        </div>
-        <div className="bg-slate-50 border border-slate-200 text-center p-4 rounded-xl shadow-sm">
+        </button>
+        <div className="bg-slate-50 border border-slate-200 text-center p-4 rounded-xl shadow-sm opacity-50">
           <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Ítems Exentos</p>
           <p className="text-3xl font-black text-slate-700">{exentoCount}</p>
         </div>
@@ -82,6 +99,34 @@ export function BillOfQuantitiesForm({ initialData, onSubmit }: BillOfQuantities
         <div className="text-sm text-amber-800">
           <p className="font-bold">Responsabilidad Técnica</p>
           <p>La correcta categorización de IVA vs AIU es fundamental para el cruce de ofertas y el cálculo final del costo. Verifica la matriz tributaria del proyecto.</p>
+        </div>
+      </div>
+
+      {/* Tabs / Filter Navigation */}
+      <div className="flex items-center gap-4 mb-4">
+        <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+          <button 
+            onClick={() => setActiveTab('ALL')}
+            className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'ALL' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            Todos los ítems
+          </button>
+          <button 
+            onClick={() => setActiveTab('IVA_PLENO')}
+            className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'IVA_PLENO' ? 'bg-emerald-500 text-white shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            IVA
+          </button>
+          <button 
+            onClick={() => setActiveTab('AIU')}
+            className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'AIU' ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            AIU
+          </button>
+        </div>
+        <div className="text-xs font-bold text-slate-400 flex items-center gap-2">
+          <Filter size={14} />
+          Mostrando {filteredItems.length} de {totalItems} actividades
         </div>
       </div>
 
@@ -100,7 +145,7 @@ export function BillOfQuantitiesForm({ initialData, onSubmit }: BillOfQuantities
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-slate-700">
-              {items.map((item, idx) => (
+              {filteredItems.map((item, idx) => (
                 <tr key={item.id} className="hover:bg-slate-50 transition-colors">
                   <td className="px-6 py-3 text-center align-middle font-medium text-slate-400 border-r border-slate-100">
                     {idx + 1}
@@ -136,7 +181,7 @@ export function BillOfQuantitiesForm({ initialData, onSubmit }: BillOfQuantities
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="AIU" className="font-semibold text-indigo-700">Sobre A.I.U.</SelectItem>
-                        <SelectItem value="IVA_PLENO" className="font-semibold text-emerald-700">IVA Pleno</SelectItem>
+                        <SelectItem value="IVA_PLENO" className="font-semibold text-emerald-700">IVA</SelectItem>
                         <SelectItem value="EXENTO" className="font-semibold text-slate-600">Exento</SelectItem>
                       </SelectContent>
                     </Select>
@@ -144,11 +189,11 @@ export function BillOfQuantitiesForm({ initialData, onSubmit }: BillOfQuantities
                 </tr>
               ))}
               
-              {items.length === 0 && (
+              {filteredItems.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
                     <FileSpreadsheet className="mx-auto h-12 w-12 text-slate-300 mb-3" />
-                    No hay ítems cargados en el pliego de condiciones.
+                    No hay ítems con este criterio de impuesto.
                   </td>
                 </tr>
               )}
@@ -180,3 +225,4 @@ export function BillOfQuantitiesForm({ initialData, onSubmit }: BillOfQuantities
     </div>
   )
 }
+

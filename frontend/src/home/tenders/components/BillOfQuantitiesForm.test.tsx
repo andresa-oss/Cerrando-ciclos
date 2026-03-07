@@ -19,7 +19,7 @@ describe('BillOfQuantitiesForm', () => {
     expect(screen.getAllByText('1')[0]).toBeInTheDocument() // Using 1 directly because text content is '1'
 
     // Items IVA_PLENO (should be 1)
-    expect(screen.getByText('Ítems IVA Pleno')).toBeInTheDocument()
+    expect(screen.getByText('Ítems IVA')).toBeInTheDocument()
     // It has 1 item as well.
 
     expect(screen.getByText('Total Ítems')).toBeInTheDocument()
