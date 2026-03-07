@@ -1,7 +1,5 @@
 # Cerrando Ciclos - Plataforma de Licitación Solenium
 
-![Solenium Logo](https://solenium.co/wp-content/uploads/2021/04/Logo-Solenium-Horizontal-Azul.png)
-
 ## 🌟 Visión General
 **Cerrando Ciclos** es una plataforma centralizada diseñada para Solenium (EPC líder en energías renovables en Colombia). El sistema automatiza y digitaliza el proceso de licitación para la construcción de minigranjas solares, optimizando la evaluación económica de contratistas y la toma de decisiones estratégicas.
 
