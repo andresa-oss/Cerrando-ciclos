@@ -10,14 +10,14 @@ function CounterofferPage() {
     <div className="min-h-screen bg-slate-50 relative overflow-hidden">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 -ml-32 -mt-32 w-96 h-96 rounded-full bg-slate-200 blur-3xl opacity-50 pointer-events-none"></div>
-      
+
       {/* Navigation Header mockup */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src="/LogoSolenium.png" alt="Solenium Logo" className="h-8 w-auto object-contain" />
             <span className="font-black text-slate-900 tracking-tighter text-2xl" style={{ fontFamily: 'Arial Black, system-ui, sans-serif' }}>
-              GISE
+              S.O.S GISE
             </span>
           </div>
           <div className="flex items-center gap-4">
@@ -34,7 +34,7 @@ function CounterofferPage() {
           </div>
         </div>
       </header>
-      
+
       {/* Page Content */}
       <main className="relative z-10 py-8">
         <CounterofferDashboard />
