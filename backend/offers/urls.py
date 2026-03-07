@@ -1,10 +1,10 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import OfferViewSet, OfferItemViewSet
+from .views import ContractorOfferViewSet, ItemPricingViewSet
 
 router = DefaultRouter()
-router.register(r'offers', OfferViewSet, basename='offer')
-router.register(r'offer-items', OfferItemViewSet, basename='offer-item')
+router.register(r'offers', ContractorOfferViewSet, basename='offer')
+router.register(r'pricing', ItemPricingViewSet, basename='pricing')
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -1,57 +1,64 @@
-from rest_framework import viewsets, status, serializers
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.http import HttpResponse
-from django.utils import timezone
-from .models import Offer, OfferItem, OfferStatus
-from .serializers import OfferSerializer, OfferItemSerializer
-from .permissions import IsOfferOwner, IsOfferModifiable
+from .models import ContractorOffer, ItemPricing
+from .serializers import ContractorOfferSerializer, ItemPricingSerializer
+from .pdf_generator import render_to_pdf
 
-class OfferViewSet(viewsets.ModelViewSet):
-    serializer_class = OfferSerializer
-    permission_classes = [IsOfferOwner, IsOfferModifiable]
+class ContractorOfferViewSet(viewsets.ModelViewSet):
+    """
+    Ruta para la Gestión Integral de Ofertas Globales de los Contratistas.
+    El Frontend creará el Cascarón principal aquí una vez ingresa el Contratista.
+    """
+    queryset = ContractorOffer.objects.all().order_by('-created_at')
+    serializer_class = ContractorOfferSerializer
 
+    # Añadimos un pequeño buscador para que el Admin filtre las Ofertas
+    # de un Proyecto específico: `?project=1`
     def get_queryset(self):
-        return Offer.objects.filter(contractor=self.request.user)
-
-    def perform_create(self, serializer):
-        serializer.save(contractor=self.request.user)
-
-    @action(detail=True, methods=['post'])
-    def submit(self, request, pk=None):
-        offer = self.get_object()
-        if offer.status == OfferStatus.SUBMITTED:
-            return Response({'detail': 'Offer already submitted.'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        offer.status = OfferStatus.SUBMITTED
-        offer.submitted_at = timezone.now()
-        offer.save()
-        return Response({'status': 'offer submitted'})
+        queryset = super().get_queryset()
+        project_id = self.request.query_params.get('project')
+        if project_id:
+            queryset = queryset.filter(project_id=project_id)
+        return queryset
 
     @action(detail=True, methods=['get'])
-    def pdf(self, request, pk=None):
+    def download_pdf(self, request, pk=None):
+        """
+        Descarga la constancia en formato PDF con la Página 1 (AIU)
+        y la Página 2 (IVA pleno) de acuerdo a la solicitud de Solenium.
+        """
         offer = self.get_object()
-        if offer.status != OfferStatus.SUBMITTED:
-            return Response({'detail': 'Offer must be submitted to generate PDF.'}, status=status.HTTP_400_BAD_REQUEST)
         
-        from .services.pdf_generator import generate_offer_pdf
-        pdf_bytes = generate_offer_pdf(offer)
-        
-        response = HttpResponse(pdf_bytes, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="oferta_solenium_{offer.id}.pdf"'
-        return response
+        # En caso de que se necesiten subtotales para mostrar
+        subtotal_aiu = offer.total_budget_offered + offer.total_aiu_offered
 
-class OfferItemViewSet(viewsets.ModelViewSet):
-    serializer_class = OfferItemSerializer
-    permission_classes = [IsOfferOwner, IsOfferModifiable]
+        context = {
+            'offer': offer,
+            'subtotal_aiu': subtotal_aiu,
+        }
+
+        pdf = render_to_pdf('offers/pdf_offer.html', context)
+        if pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = f"Oferta_{offer.id}_{offer.contractor_name}.pdf"
+            content = f"attachment; filename={filename}"
+            response['Content-Disposition'] = content
+            return response
+        return Response({"error": "No pudimos generar el PDF"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class ItemPricingViewSet(viewsets.ModelViewSet):
+    """
+    Endpoint masivo donde el Contratista guarda (DRAFT/Borrador) 
+    o actualiza sus precios por actividad (Item a Item).
+    """
+    queryset = ItemPricing.objects.all()
+    serializer_class = ItemPricingSerializer
 
     def get_queryset(self):
-        return OfferItem.objects.filter(offer__contractor=self.request.user)
-
-    def perform_create(self, serializer):
-        offer_id = self.request.data.get('offer')
-        try:
-            offer = Offer.objects.get(id=offer_id, contractor=self.request.user)
-            serializer.save(offer=offer)
-        except Offer.DoesNotExist:
-            raise serializers.ValidationError('Offer not found or not accessible.')
+        queryset = super().get_queryset()
+        offer_id = self.request.query_params.get('offer_id')
+        if offer_id:
+            queryset = queryset.filter(offer_id=offer_id)
+        return queryset

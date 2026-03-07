@@ -73,5 +73,12 @@ Al finalizar cada sesión significativa de desarrollo:
 2. Si hay nueva información crítica del dominio (ej. nuevos endpoints globales o reglas de negocio), añádela.
 3. Elimina información redundante u obsoleta.
 4. **IMPORTANTE:** El archivo NO DEBE exceder las 200 líneas. Prioriza reglas sobre explicaciones.
-
 ---
+
+## 8. Reglas de Negocio Clave (Dominio Core)
+- **Motor de Evaluación (Semáforo):** 
+  - Compara el Costo Directo Ofertado (V) de las obras civiles frente a 2 límites del PEPC: Inferior (`J297`) y Superior (`LM297`).
+  - **ROJO:** `V` es más del 25% barato que J297, o `V` es más del 25% caro que LM297.
+  - **VERDE:** `V` es máximo 25% más barato que J297 (ahorro óptimo `J297*0.75 <= V <= J297`).
+  - **AMARILLO:** Entre J297 y LM297, extendiéndose máximo un +25% por encima de LM297 (`J297 < V <= LM297*1.25`).
+- **Cierre Licitación:** No se pueden recibir ni editar ofertas una vez pasada la `deadline`. Solo ofertas Verdes/Amarillas pasan al Top 3 de Contraoferta.

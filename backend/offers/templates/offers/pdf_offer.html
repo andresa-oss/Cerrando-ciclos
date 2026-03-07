@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Propuesta Solenium</title>
+    <style>
+        @page {
+            size: a4 portrait;
+            @frame header_frame {
+                -pdf-frame-content: header_content;
+                left: 50pt; width: 512pt; top: 30pt; height: 50pt;
+            }
+            @frame content_frame {
+                left: 50pt; width: 512pt; top: 90pt; height: 650pt;
+            }
+            @frame footer_frame {
+                -pdf-frame-content: footer_content;
+                left: 50pt; width: 512pt; top: 780pt; height: 30pt;
+            }
+        }
+        
+        body {
+            font-family: Helvetica, sans-serif;
+            font-size: 11pt;
+            color: #333333;
+        }
+
+        .header {
+            text-align: right;
+            border-bottom: 2px solid #57a126; /* Verde Solenium */
+            padding-bottom: 10px;
+        }
+        
+        .header h1 {
+            color: #57a126;
+            margin: 0;
+            font-size: 18pt;
+        }
+
+        .title-doc {
+            text-align: center;
+            font-size: 16pt;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        table.bordered {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        table.bordered th, table.bordered td {
+            border: 1px solid #cccccc;
+            padding: 8px;
+            text-align: left;
+        }
+        table.bordered th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .watermark {
+            color: #eeeeee;
+            font-size: 60pt;
+            text-align: center;
+            position: absolute;
+            top: 250pt;
+            left: 50pt;
+            z-index: -1000;
+            transform: rotate(-45deg);
+        }
+
+        .footer {
+            font-size: 9pt;
+            color: #777;
+            text-align: center;
+            border-top: 1px solid #cccccc;
+            padding-top: 5px;
+        }
+
+        /* Page break class for xhtml2pdf */
+        .page-break {
+            pdf-pagebreak-before: always;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Repite Header y Footer en cada página -->
+    <div id="header_content" class="header">
+        <h1>SOLENIUM S.A.S</h1>
+        <small>Portal de Licitaciones y Recepción de Ofertas</small>
+    </div>
+
+    <div id="footer_content" class="footer">
+        Generado Automáticamente con Motor de Evaluación Solenium | Fecha de Envío: {{ offer.submitted_at|date:"d/m/Y H:i" }} | Página <pdf:pagenumber> de <pdf:pagecount>
+    </div>
+
+    {% if offer.status == 'DRAFT' %}
+    <div class="watermark">BORRADOR</div>
+    {% else %}
+    <div class="watermark">FINAL Y SELLADO</div>
+    {% endif %}
+
+    <!-- PÁGINA 1: Carátula e Información del AIU -->
+    <div class="title-doc">PROPUESTA DE SERVICIOS - {{ offer.project.title }}</div>
+    
+    <p><strong>Contratista:</strong> {{ offer.contractor_name }}</p>
+    <p><strong>Email Relacionado:</strong> {{ offer.contractor_email }}</p>
+
+    <br>
+    <h3>1. Resumen de AIU y Estructura de Costos</h3>
+    <table class="bordered">
+        <tr>
+            <th>Concepto Evaluado</th>
+            <th style="text-align: right;">Valor Económico Propuesto</th>
+        </tr>
+        <tr>
+            <td>Costo Directo Original (Suma de Ítems base)</td>
+            <td style="text-align: right;">$ {{ offer.total_budget_offered|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td>A.I.U (Administración, Imprevistos y Utilidades)</td>
+            <td style="text-align: right;">$ {{ offer.total_aiu_offered|floatformat:2 }}</td>
+        </tr>
+        <tr style="font-weight: bold; background-color:#e8f5e9;">
+            <td>Subtotal Base (Antes de IVA)</td>
+            <td style="text-align: right;">$ {{ subtotal_aiu|floatformat:2 }}</td>
+        </tr>
+    </table>
+
+    <p style="margin-top: 40px; font-style: italic; color: #555;">
+        *Nota de aclaración legal:* Este documento se genera validando que la oferta enviada por el proveedor está bajo el margen de AIU permitido y fijado en los pliegos originales.
+    </p>
+
+    <!-- Salto de Página explícito para xhtml2pdf -->
+    <div class="page-break"></div>
+
+    <!-- PÁGINA 2: IVA Pleno y Gran Total -->
+    <h3>2. Consolidación de IVA y Gran Total Ofertado</h3>
+
+    <p>En concordancia con los datos enviados en la carga de actividades individuales, se consolida el IVA Pleno o aplicable para este Proyecto, resultando en:</p>
+
+    <table class="bordered" style="margin-top:20px;">
+        <tr>
+            <th>Concepto Final</th>
+            <th style="text-align: right;">Monto Liquidado</th>
+        </tr>
+        <tr>
+            <td>Total Previo (Obras Civiles + AIU)</td>
+            <td style="text-align: right;">$ {{ subtotal_aiu|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td>IVA Calculado (Según Pliegos de Referencia)</td>
+            <td style="text-align: right;">$ {{ offer.total_iva_offered|floatformat:2 }}</td>
+        </tr>
+        <tr style="font-weight: bold; background-color:#1b5e20; color:white;">
+            <td>GRAN TOTAL OFERTA (VALOR CONTRACTUAL)</td>
+            <td style="text-align: right;">$ {{ offer.grand_total_offered|floatformat:2 }}</td>
+        </tr>
+    </table>
+
+    <br><br>
+    
+    <div style="border: 2px dashed #999; padding: 15px; margin-top: 50px;">
+        <h4 style="margin:0; margin-bottom: 5px;">CERTIFICACIÓN DE AUTENTICIDAD</h4>
+        <p style="font-size: 9pt; margin: 0; text-align: justify;">
+            El contratista declara que los precios que se registran en este informe concuerdan matemáticamente con los subidos individualmente en el portal al Ítem por Ítem, y que los cálculos del AIU e IVA fueron modelados bajo el algoritmo interno de los pliegos oficiales del Límite establecido.
+        </p>
+    </div>
+
+</body>
+</html>
