@@ -15,11 +15,11 @@ const getScoreColor = (score: number) => {
 const getStatusBadge = (status: ContractorResult['status']) => {
   switch (status) {
     case 'ADJUDICABLE':
-      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold"><CheckCircle2 size={12} /> Adjudicable</span>
-    case 'EN_REVISION':
-      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold"><Clock size={12} /> Revisión</span>
+      return <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-black uppercase tracking-widest border border-emerald-200"><CheckCircle2 size={12} /> Habilitada</span>
     case 'RECHAZADA':
-      return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 text-xs font-bold"><XCircle size={12} /> Rechazada</span>
+      return <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-50 text-red-500 text-[10px] font-black uppercase tracking-widest border border-red-100 italic opacity-70"><XCircle size={12} /> Rechazada</span>
+    default:
+      return <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-50 text-amber-700 text-[10px] font-black uppercase tracking-widest border border-amber-100"><Clock size={12} /> En Revisión</span>
   }
 }
 
@@ -55,12 +55,16 @@ export function ContractorHeatmap({ results }: ContractorHeatmapProps) {
                 {/* Ranking Column */}
                 <td className="px-6 py-4 align-middle">
                   <div className="flex justify-center">
-                    {contractor.rank === 1 ? (
-                      <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center border border-indigo-200 shadow-sm">
+                    {contractor.rank === 1 && contractor.status !== 'RECHAZADA' ? (
+                      <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center border border-indigo-200 shadow-sm animate-pulse">
                         <Trophy size={20} className="fill-indigo-600/20" />
                       </div>
+                    ) : contractor.status === 'RECHAZADA' ? (
+                      <div className="px-2 py-1 rounded bg-slate-100 text-slate-400 text-[10px] font-black uppercase tracking-tighter border border-slate-200">
+                        Desc.
+                      </div>
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 font-bold flex items-center justify-center border border-slate-200">
+                      <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 font-bold flex items-center justify-center border border-emerald-200">
                         #{contractor.rank}
                       </div>
                     )}
