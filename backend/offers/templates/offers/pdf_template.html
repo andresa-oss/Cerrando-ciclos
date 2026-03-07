@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Oferta Licitación {{ offer.tender_id }}</title>
+    <style>
+        @page { size: A4; margin: 2cm; }
+        body { font-family: 'Helvetica', sans-serif; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .logo { font-size: 24px; font-weight: bold; color: #1a56db; }
+        .watermark { position: fixed; top: 30%; left: 10%; font-size: 80px; color: rgba(0,0,0,0.05); transform: rotate(-45deg); z-index: -1; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .page-break { page-break-before: always; }
+        .total { text-align: right; font-weight: bold; font-size: 18px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="watermark">SOLENIUM CONFIDENCIAL</div>
+    
+    <!-- Página 1: AIU -->
+    <div class="header">
+        <div class="logo">Solenium Platform</div>
+        <h2>Oferta Comercial - Página 1 (Administración, Imprevistos y Utilidades)</h2>
+        <p><strong>Contratista:</strong> {{ offer.contractor.username }}</p>
+        <p><strong>ID Licitación:</strong> {{ offer.tender_id }}</p>
+        <p><strong>Fecha Envío:</strong> {{ offer.submitted_at|date:"Y-m-d H:i" }}</p>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Actividad</th>
+                <th>Observación</th>
+                <th>Valor Unitario (AIU)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in offer.items.all %}
+            <tr>
+                <td>{{ item.activity_name }}</td>
+                <td>{{ item.observation|default:"-" }}</td>
+                <td>${{ item.unit_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- Página 2: IVA Pleno -->
+    <div class="header">
+        <div class="logo">Solenium Platform</div>
+        <h2>Oferta Comercial - Página 2 (IVA Pleno)</h2>
+        <p>Valores presentados con impuesto al valor agregado.</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Actividad</th>
+                <th>Valor + IVA (19%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in offer.items.all %}
+            <tr>
+                <td>{{ item.activity_name }}</td>
+                <td>
+                    <!-- Ejemplo simplificado: Se asume un cálculo de IVA en vista o template -->
+                    Cálculo Interno
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
